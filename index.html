@@ -1,0 +1,6310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Ramadhan Countdown Indonesia</title>
+
+<meta
+    name="description"
+    content="Hitung mundur menuju Lebaran (Idul Fitri) dengan suasana Islami, jadwal salat, countdown, dan musik otomatis. UI otomatis berubah ketupat saat Ramadan dan Lebaran."
+>
+
+<meta name="theme-color" content="#ead9bd">
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+
+    color: #40372d;
+
+    background:
+        radial-gradient(
+            circle at 15% 8%,
+            rgba(255,255,255,.9),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 18%,
+            rgba(244,207,149,.4),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #fbf3e5,
+            #e3cda8
+        );
+
+    transition:
+        background 1.8s ease,
+        color 1.2s ease;
+}
+
+/* =========================================================
+   DAY
+========================================================= */
+
+body.day {
+    color: #40372d;
+
+    background:
+        radial-gradient(
+            circle at 15% 8%,
+            rgba(255,255,255,.95),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 18%,
+            rgba(247,211,157,.48),
+            transparent 31%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(220,179,112,.22),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #fbf3e5,
+            #e3cda8
+        );
+}
+
+/* =========================================================
+   SUNSET
+========================================================= */
+
+body.sunset {
+    color: #49372d;
+
+    background:
+        radial-gradient(
+            circle at 50% 8%,
+            rgba(255,228,177,.65),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 10% 80%,
+            rgba(202,116,79,.3),
+            transparent 34%
+        ),
+        linear-gradient(
+            145deg,
+            #f0dfc7,
+            #dda17d,
+            #a86f60
+        );
+}
+
+/* =========================================================
+   NIGHT
+========================================================= */
+
+body.night {
+    color: #eee4d3;
+
+    background:
+        radial-gradient(
+            circle at 78% 12%,
+            rgba(244,211,151,.13),
+            transparent 23%
+        ),
+        radial-gradient(
+            circle at 20% 70%,
+            rgba(65,87,120,.2),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(54,67,91,.18),
+            transparent 40%
+        ),
+        linear-gradient(
+            145deg,
+            #292b31,
+            #181a20,
+            #0b0d12
+        );
+}
+
+/* =========================================================
+   ISLAMIC PATTERN
+========================================================= */
+
+.pattern {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: .18;
+
+    background-image:
+        linear-gradient(
+            30deg,
+            rgba(121,96,59,.13) 12%,
+            transparent 12.5%,
+            transparent 87%,
+            rgba(121,96,59,.13) 87.5%,
+            rgba(121,96,59,.13)
+        ),
+        linear-gradient(
+            150deg,
+            rgba(121,96,59,.13) 12%,
+            transparent 12.5%,
+            transparent 87%,
+            rgba(121,96,59,.13) 87.5%,
+            rgba(121,96,59,.13)
+        );
+
+    background-size:
+        70px 120px,
+        70px 120px;
+
+    animation:
+        patternMove 30s linear infinite;
+}
+
+body.night .pattern {
+    opacity: .09;
+    filter: brightness(.7);
+}
+
+@keyframes patternMove {
+    from {
+        background-position:
+            0 0,
+            0 0;
+    }
+
+    to {
+        background-position:
+            70px 120px,
+            -70px -120px;
+    }
+}
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.orb {
+    position: absolute;
+
+    width: 280px;
+    height: 280px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.27),
+            transparent 68%
+        );
+
+    filter: blur(8px);
+
+    animation:
+        floatOrb 13s ease-in-out infinite;
+    will-change: transform;
+}
+
+.orb-1 {
+    left: -120px;
+    top: 10%;
+}
+
+.orb-2 {
+    right: -130px;
+    top: 48%;
+
+    width: 350px;
+    height: 350px;
+
+    animation-delay: -4s;
+}
+
+.orb-3 {
+    left: 38%;
+    bottom: -200px;
+
+    width: 380px;
+    height: 380px;
+
+    animation-delay: -8s;
+}
+
+@keyframes floatOrb {
+    0%,100% {
+        transform:
+            translate3d(0,0,0)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translate3d(0,-28px,0)
+            scale(1.04);
+    }
+}
+
+/* =========================================================
+   STARS
+========================================================= */
+
+.stars {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+
+    opacity: .25;
+
+    animation:
+        starFloat 7s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+.star:nth-child(1) {
+    left: 7%;
+    top: 16%;
+}
+
+.star:nth-child(2) {
+    left: 18%;
+    top: 70%;
+    animation-delay: -2s;
+}
+
+.star:nth-child(3) {
+    left: 31%;
+    top: 28%;
+    animation-delay: -4s;
+}
+
+.star:nth-child(4) {
+    right: 21%;
+    top: 16%;
+    animation-delay: -1s;
+}
+
+.star:nth-child(5) {
+    right: 8%;
+    top: 63%;
+    animation-delay: -3s;
+}
+
+.star:nth-child(6) {
+    right: 32%;
+    bottom: 15%;
+    animation-delay: -5s;
+}
+
+.star:nth-child(7) {
+    left: 52%;
+    top: 11%;
+    animation-delay: -6s;
+}
+
+.star:nth-child(8) {
+    left: 72%;
+    top: 38%;
+    animation-delay: -7s;
+}
+
+.star:nth-child(9) {
+    left: 42%;
+    top: 72%;
+    animation-delay: -2s;
+}
+
+.star:nth-child(10) {
+    right: 44%;
+    top: 20%;
+    animation-delay: -5s;
+}
+
+@keyframes starFloat {
+    0%,100% {
+        opacity: .16;
+        transform:
+            translate3d(0,0,0)
+            scale(.85);
+    }
+
+    50% {
+        opacity: .52;
+        transform:
+            translate3d(0,-15px,0)
+            scale(1.15);
+    }
+}
+
+/* =========================================================
+   ORNAMENTS
+========================================================= */
+
+.ornaments {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.geo {
+    position: absolute;
+
+    width: 32px;
+    height: 32px;
+
+    border: 1px solid rgba(142,110,66,.22);
+
+    transform: rotate(45deg);
+
+    animation:
+        geoFloat 10s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+.geo::before,
+.geo::after {
+    content: "";
+
+    position: absolute;
+    inset: 6px;
+
+    border: 1px solid rgba(142,110,66,.18);
+}
+
+.geo::after {
+    inset: 12px;
+}
+
+.geo-1 {
+    top: 25%;
+    left: 5%;
+}
+
+.geo-2 {
+    top: 40%;
+    right: 6%;
+    animation-delay: -3s;
+}
+
+.geo-3 {
+    bottom: 20%;
+    left: 10%;
+    animation-delay: -6s;
+}
+
+.geo-4 {
+    bottom: 30%;
+    right: 12%;
+    animation-delay: -8s;
+}
+
+@keyframes geoFloat {
+    0%,100% {
+        transform:
+            rotate(45deg)
+            translate3d(0,0,0);
+
+        opacity: .28;
+    }
+
+    50% {
+        transform:
+            rotate(135deg)
+            translate3d(0,-22px,0);
+
+        opacity: .65;
+    }
+}
+
+/* =========================================================
+   LANTERNS
+========================================================= */
+
+.lanterns {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.lantern {
+    position: absolute;
+
+    top: -8px;
+
+    width: 42px;
+    height: 72px;
+
+    transform-origin: top center;
+
+    animation:
+        lanternSwing 5s ease-in-out infinite;
+    will-change: transform;
+}
+
+.lantern::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 1px;
+    height: 24px;
+
+    background: rgba(120,90,53,.45);
+
+    transform: translateX(-50%);
+}
+
+.lantern-body {
+    position: absolute;
+
+    left: 50%;
+    top: 21px;
+
+    width: 30px;
+    height: 40px;
+
+    transform: translateX(-50%);
+
+    border-radius:
+        7px 7px 10px 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(112,77,40,.18),
+            rgba(255,224,159,.58),
+            rgba(112,77,40,.18)
+        );
+
+    border:
+        1px solid rgba(255,235,191,.55);
+
+    box-shadow:
+        0 0 22px rgba(235,187,107,.28);
+}
+
+.lantern-body::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 6px;
+
+    width: 15px;
+    height: 25px;
+
+    transform: translateX(-50%);
+
+    border:
+        1px solid rgba(255,241,204,.5);
+
+    border-radius: 3px;
+
+    background:
+        rgba(255,219,145,.28);
+}
+
+.lantern-body::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: -7px;
+
+    width: 13px;
+    height: 7px;
+
+    transform: translateX(-50%);
+
+    background:
+        rgba(115,78,42,.4);
+
+    border-radius:
+        0 0 6px 6px;
+}
+
+.lantern-left {
+    left: 4%;
+    animation-delay: -1s;
+}
+
+.lantern-right {
+    right: 4%;
+    animation-delay: -3s;
+}
+
+@keyframes lanternSwing {
+    0%,100% {
+        transform:
+            rotate(5deg);
+    }
+
+    50% {
+        transform:
+            rotate(-5deg);
+    }
+}
+
+/* =========================================================
+   GLASS
+========================================================= */
+
+.glass {
+    background:
+        rgba(255,250,239,.27);
+
+    border:
+        1px solid rgba(255,255,255,.52);
+
+    box-shadow:
+        0 25px 70px rgba(75,56,33,.12),
+        inset 0 1px 0 rgba(255,255,255,.58);
+
+    backdrop-filter:
+        blur(10px);
+
+    -webkit-backdrop-filter:
+        blur(10px);
+}
+
+body.night .glass {
+    background:
+        rgba(255,255,255,.065);
+
+    border-color:
+        rgba(255,255,255,.14);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.3),
+        inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app {
+    position: relative;
+    z-index: 5;
+
+    width:
+        min(
+            1160px,
+            calc(100% - 24px)
+        );
+
+    margin: auto;
+
+    padding:
+        18px
+        0
+        55px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding:
+        17px 20px;
+
+    border-radius: 22px;
+
+    margin-bottom: 18px;
+
+    animation:
+        reveal .8s ease both;
+}
+
+.brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+.brand-icon {
+    width: 46px;
+    height: 46px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255,255,255,.25);
+
+    border:
+        1px solid rgba(255,255,255,.5);
+
+    font-size: 23px;
+
+    box-shadow:
+        0 0 25px rgba(224,185,119,.12);
+}
+
+.brand h1 {
+    font-size: 19px;
+    letter-spacing: -.03em;
+}
+
+.brand p {
+    margin-top: 3px;
+    color: #786d5d;
+    font-size: 11px;
+}
+
+body.night .brand p {
+    color: #b9af9e;
+}
+
+.system-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        9px 13px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.2);
+
+    border:
+        1px solid rgba(255,255,255,.4);
+
+    color: #786d5d;
+
+    font-size: 11px;
+}
+
+body.night .system-status {
+    color: #c5bbaa;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #719268;
+
+    box-shadow:
+        0 0 12px rgba(113,146,104,.7);
+
+    animation:
+        statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+    0%,100% {
+        opacity: .5;
+        transform: scale(.85);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    position: relative;
+
+    padding:
+        32px 30px 30px;
+
+    border-radius: 30px;
+
+    text-align: center;
+
+    overflow: hidden;
+
+    animation:
+        reveal .9s .1s ease both;
+}
+
+.hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    left: 50%;
+    top: 25%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,225,167,.18),
+            transparent 67%
+        );
+
+    pointer-events: none;
+}
+
+.label {
+    position: relative;
+
+    color: #9b7951;
+
+    font-size: 11px;
+
+    font-weight: 850;
+
+    letter-spacing: .19em;
+
+    text-transform: uppercase;
+}
+
+body.night .label {
+    color: #d5b983;
+}
+
+.hero h2 {
+    position: relative;
+
+    margin-top: 10px;
+
+    font-size:
+        clamp(
+            34px,
+            6vw,
+            58px
+        );
+
+    line-height: 1;
+
+    letter-spacing: -.06em;
+}
+
+.arabic {
+    position: relative;
+
+    margin-top: 12px;
+
+    font-family:
+        "Noto Naskh Arabic",
+        "Amiri",
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(25px, 5vw, 37px);
+
+    color:
+        rgba(133,98,54,.75);
+
+    letter-spacing: .02em;
+
+    animation:
+        arabicGlow 4s ease-in-out infinite;
+}
+
+body.night .arabic {
+    color:
+        rgba(230,207,163,.75);
+}
+
+@keyframes arabicGlow {
+    0%,100% {
+        opacity: .65;
+    }
+
+    50% {
+        opacity: 1;
+
+        text-shadow:
+            0 0 25px rgba(232,194,126,.2);
+    }
+}
+
+.hero-description {
+    position: relative;
+
+    max-width: 620px;
+
+    margin:
+        11px auto 0;
+
+    color: #786d5d;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+body.night .hero-description {
+    color: #b9af9e;
+}
+
+/* =========================================================
+   RAMADAN STATUS
+========================================================= */
+
+.ramadan-status {
+    position: relative;
+
+    width: fit-content;
+    max-width: 100%;
+
+    margin:
+        18px auto 0;
+
+    padding:
+        9px 16px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.17);
+
+    border:
+        1px solid rgba(255,255,255,.4);
+
+    color: #806846;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+
+    box-shadow:
+        0 8px 25px rgba(77,56,29,.05);
+}
+
+body.night .ramadan-status {
+    color: #d7c49f;
+}
+
+/* =========================================================
+   MOSQUE SCENE
+========================================================= */
+
+.mosque-wrapper {
+    position: relative;
+
+    height: 330px;
+
+    max-width: 820px;
+
+    margin:
+        7px auto 0;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    isolation: isolate;
+}
+
+/* =========================================================
+   SCENE GLOW
+========================================================= */
+
+.mosque-wrapper::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 31px;
+
+    width: 590px;
+    height: 250px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(239,199,126,.22),
+            rgba(239,199,126,.08) 42%,
+            transparent 73%
+        );
+
+    filter: blur(8px);
+
+    animation:
+        mosqueGlow 5s ease-in-out infinite;
+
+    z-index: -2;
+}
+
+body.night .mosque-wrapper::before {
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(238,202,137,.2),
+            rgba(238,202,137,.055) 42%,
+            transparent 73%
+        );
+}
+
+@keyframes mosqueGlow {
+    0%,100% {
+        opacity: .58;
+        transform:
+            translate3d(-50%,0,0)
+            scale(.97);
+    }
+
+    50% {
+        opacity: 1;
+        transform:
+            translate3d(-50%,0,0)
+            scale(1.035);
+    }
+}
+
+/* =========================================================
+   MOSQUE MOON
+========================================================= */
+
+.moon {
+    position: absolute;
+
+    top: 30px;
+    right: 17%;
+
+    width: 67px;
+    height: 67px;
+
+    border-radius: 50%;
+
+    background:
+        #a3845c;
+
+    opacity: .86;
+
+    box-shadow:
+        0 0 55px rgba(216,185,128,.32);
+
+    animation:
+        moonFloat 6s ease-in-out infinite;
+
+    z-index: 2;
+
+    will-change: transform;
+}
+
+body.night .moon {
+    background:
+        #e0c68e;
+
+    box-shadow:
+        0 0 70px rgba(224,198,142,.2);
+}
+
+.moon::after {
+    content: "";
+
+    position: absolute;
+
+    top: -8px;
+    left: 20px;
+
+    width: 67px;
+    height: 67px;
+
+    border-radius: 50%;
+
+    background:
+        #e7d5b7;
+}
+
+body.sunset .moon::after {
+    background:
+        #d99f7c;
+}
+
+body.night .moon::after {
+    background:
+        #22252c;
+}
+
+@keyframes moonFloat {
+    0%,100% {
+        transform:
+            translate3d(0,0,0)
+            rotate(-4deg);
+    }
+
+    50% {
+        transform:
+            translate3d(0,-10px,0)
+            rotate(4deg);
+    }
+}
+
+.moon-star {
+    position: absolute;
+
+    top: 32px;
+    right: 10%;
+
+    color:
+        rgba(155,119,68,.7);
+
+    font-size: 15px;
+
+    animation:
+        starTwinkle 3s ease-in-out infinite;
+
+    z-index: 2;
+
+    will-change: transform, opacity;
+}
+
+body.night .moon-star {
+    color:
+        #e2c995;
+}
+
+@keyframes starTwinkle {
+    0%,100% {
+        opacity: .35;
+        transform: scale(.85);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* =========================================================
+   MOSQUE
+========================================================= */
+
+.mosque {
+    position: relative;
+
+    width:
+        min(
+            690px,
+            100%
+        );
+
+    height: 255px;
+
+    color:
+        rgba(66,57,44,.72);
+
+    transition:
+        color 1.3s ease;
+
+    z-index: 3;
+}
+
+body.sunset .mosque {
+    color:
+        rgba(68,48,42,.68);
+}
+
+body.night .mosque {
+    color:
+        rgba(224,214,194,.62);
+}
+
+/* =========================================================
+   MOSQUE GROUND
+========================================================= */
+
+.mosque-ground {
+    position: absolute;
+
+    left: 50%;
+    bottom: 0;
+
+    width: 620px;
+    height: 30px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    opacity: .30;
+
+    border-radius: 50%;
+
+    z-index: 1;
+}
+
+.mosque-platform {
+    position: absolute;
+
+    left: 50%;
+    bottom: 13px;
+
+    width: 575px;
+    height: 15px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    opacity: .43;
+
+    border-radius:
+        50% 50% 20% 20%;
+
+    z-index: 2;
+}
+
+.mosque-path {
+    position: absolute;
+
+    left: 50%;
+    bottom: 7px;
+
+    width: 90px;
+    height: 58px;
+
+    transform:
+        translateX(-50%)
+        perspective(80px)
+        rotateX(50deg);
+
+    background:
+        rgba(255,236,197,.10);
+
+    z-index: 3;
+
+    clip-path:
+        polygon(
+            25% 0,
+            75% 0,
+            100% 100%,
+            0 100%
+        );
+}
+
+/* =========================================================
+   MAIN BUILDING
+========================================================= */
+
+.mosque-main {
+    position: absolute;
+
+    left: 50%;
+    bottom: 27px;
+
+    width: 345px;
+    height: 121px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    border-radius:
+        7px 7px 2px 2px;
+
+    box-shadow:
+        0 15px 30px rgba(54,42,28,.10);
+
+    z-index: 2;
+}
+
+.mosque-roof {
+    position: absolute;
+
+    left: 50%;
+    bottom: 148px;
+
+    width: 378px;
+    height: 27px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    clip-path:
+        polygon(
+            0 100%,
+            7% 65%,
+            14% 35%,
+            22% 0,
+            78% 0,
+            86% 35%,
+            93% 65%,
+            100% 100%
+        );
+
+    opacity: .96;
+
+    z-index: 3;
+}
+
+/* =========================================================
+   ISLAMIC WALL MOTIF
+========================================================= */
+
+.mosque-main::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 16px;
+
+    width: 245px;
+    height: 70px;
+
+    transform:
+        translateX(-50%);
+
+    opacity: .18;
+
+    background:
+        repeating-linear-gradient(
+            45deg,
+            transparent 0 10px,
+            rgba(255,237,194,.9) 10px 12px,
+            transparent 12px 22px
+        );
+
+    -webkit-mask-image:
+        linear-gradient(
+            to bottom,
+            #000,
+            transparent
+        );
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            #000,
+            transparent
+        );
+
+    pointer-events: none;
+}
+
+/* =========================================================
+   DOME
+========================================================= */
+
+.dome {
+    position: absolute;
+
+    left: 50%;
+    bottom: 143px;
+
+    width: 208px;
+    height: 114px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    border-radius:
+        110px 110px 10px 10px;
+
+    z-index: 4;
+}
+
+.dome::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: -3px;
+
+    width: 234px;
+    height: 15px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    border-radius:
+        50% 50% 5px 5px;
+}
+
+.dome::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 19px;
+
+    width: 76px;
+    height: 45px;
+
+    transform:
+        translateX(-50%);
+
+    border:
+        1px solid rgba(255,238,197,.13);
+
+    border-radius:
+        50% 50% 45% 45%;
+
+    opacity: .8;
+}
+
+.dome-neck {
+    position: absolute;
+
+    left: 50%;
+    bottom: 143px;
+
+    width: 120px;
+    height: 27px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    border-radius:
+        4px 4px 0 0;
+
+    z-index: 3;
+}
+
+.dome-spire {
+    position: absolute;
+
+    left: 50%;
+    bottom: 246px;
+
+    width: 5px;
+    height: 26px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    z-index: 5;
+}
+
+.dome-ball {
+    position: absolute;
+
+    left: 50%;
+    bottom: 265px;
+
+    width: 13px;
+    height: 13px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    border-radius: 50%;
+
+    z-index: 6;
+}
+
+.dome-crescent {
+    position: absolute;
+
+    left: 50%;
+    bottom: 273px;
+
+    width: 27px;
+    height: 27px;
+
+    transform:
+        translateX(-50%)
+        rotate(-18deg);
+
+    border:
+        4px solid currentColor;
+
+    border-left-color:
+        transparent;
+
+    border-bottom-color:
+        transparent;
+
+    border-radius: 50%;
+
+    z-index: 7;
+}
+
+/* =========================================================
+   FRONT PILLARS
+========================================================= */
+
+.front-pillars {
+    position: absolute;
+
+    left: 50%;
+    bottom: 28px;
+
+    width: 318px;
+    height: 108px;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 5;
+
+    pointer-events: none;
+}
+
+.front-pillar {
+    position: absolute;
+
+    bottom: 0;
+
+    width: 12px;
+    height: 108px;
+
+    background:
+        currentColor;
+
+    border-radius:
+        5px 5px 0 0;
+
+    opacity: .9;
+}
+
+.front-pillar::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: -5px;
+
+    width: 22px;
+    height: 7px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    border-radius: 3px;
+}
+
+.front-pillar-1 {
+    left: 16px;
+}
+
+.front-pillar-2 {
+    left: 84px;
+}
+
+.front-pillar-3 {
+    right: 84px;
+}
+
+.front-pillar-4 {
+    right: 16px;
+}
+
+/* =========================================================
+   MAIN DOOR
+========================================================= */
+
+.main-door {
+    position: absolute;
+
+    left: 50%;
+    bottom: 27px;
+
+    width: 57px;
+    height: 82px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        rgba(238,214,170,.18);
+
+    border:
+        2px solid rgba(255,242,211,.12);
+
+    border-bottom: 0;
+
+    border-radius:
+        30px 30px 0 0;
+
+    z-index: 7;
+
+    box-shadow:
+        inset 0 0 20px rgba(255,230,176,.07);
+}
+
+body.night .main-door {
+    background:
+        rgba(20,23,27,.25);
+}
+
+.main-door::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 7px;
+    bottom: 0;
+
+    width: 1px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        rgba(255,255,255,.15);
+}
+
+.main-door::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 33px;
+
+    width: 5px;
+    height: 5px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        rgba(244,211,151,.7);
+
+    box-shadow:
+        0 0 8px rgba(244,211,151,.3);
+}
+
+/* =========================================================
+   WINDOWS
+========================================================= */
+
+.mosque-window {
+    position: absolute;
+
+    bottom: 69px;
+
+    width: 29px;
+    height: 44px;
+
+    background:
+        rgba(237,211,168,.16);
+
+    border:
+        2px solid rgba(255,241,210,.12);
+
+    border-radius:
+        18px 18px 4px 4px;
+
+    z-index: 6;
+}
+
+.mosque-window::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 4px;
+    bottom: 3px;
+
+    width: 1px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        rgba(255,255,255,.14);
+}
+
+.mosque-window::after {
+    content: "";
+
+    position: absolute;
+
+    left: 4px;
+    right: 4px;
+    top: 50%;
+
+    height: 1px;
+
+    background:
+        rgba(255,255,255,.14);
+}
+
+.window-left {
+    left:
+        calc(50% - 130px);
+}
+
+.window-mid-left {
+    left:
+        calc(50% - 82px);
+}
+
+.window-mid-right {
+    left:
+        calc(50% + 54px);
+}
+
+.window-right {
+    left:
+        calc(50% + 102px);
+}
+
+/* =========================================================
+   MINARETS
+========================================================= */
+
+.minaret {
+    position: absolute;
+
+    bottom: 27px;
+
+    width: 44px;
+    height: 194px;
+
+    background:
+        currentColor;
+
+    border-radius:
+        7px 7px 2px 2px;
+
+    z-index: 4;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.035);
+}
+
+.minaret-left {
+    left: 6%;
+}
+
+.minaret-right {
+    right: 6%;
+}
+
+.minaret::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: -20px;
+
+    width: 65px;
+    height: 25px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    border-radius:
+        5px 5px 3px 3px;
+}
+
+.minaret::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: -68px;
+
+    width: 9px;
+    height: 53px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    border-radius:
+        5px 5px 0 0;
+}
+
+.minaret-detail {
+    position: absolute;
+
+    bottom: 75px;
+
+    width: 50px;
+    height: 10px;
+
+    background:
+        currentColor;
+
+    border-radius: 3px;
+
+    z-index: 6;
+}
+
+.minaret-detail-left {
+    left:
+        calc(6% - 3px);
+}
+
+.minaret-detail-right {
+    right:
+        calc(6% - 3px);
+}
+
+.minaret-balcony {
+    position: absolute;
+
+    bottom: 151px;
+
+    width: 61px;
+    height: 12px;
+
+    background:
+        currentColor;
+
+    border-radius: 5px;
+
+    z-index: 6;
+}
+
+.minaret-balcony-left {
+    left:
+        calc(6% - 8px);
+}
+
+.minaret-balcony-right {
+    right:
+        calc(6% - 8px);
+}
+
+.minaret-cap {
+    position: absolute;
+
+    bottom: 215px;
+
+    width: 36px;
+    height: 36px;
+
+    background:
+        currentColor;
+
+    border-radius:
+        50% 50% 5px 5px;
+
+    z-index: 5;
+}
+
+.minaret-cap-left {
+    left:
+        calc(6% + 4px);
+}
+
+.minaret-cap-right {
+    right:
+        calc(6% + 4px);
+}
+
+.minaret-spire {
+    position: absolute;
+
+    bottom: 245px;
+
+    width: 4px;
+    height: 20px;
+
+    background:
+        currentColor;
+
+    z-index: 7;
+}
+
+.minaret-spire-left {
+    left:
+        calc(6% + 20px);
+}
+
+.minaret-spire-right {
+    right:
+        calc(6% + 20px);
+}
+
+/* =========================================================
+   MINARET WINDOWS
+========================================================= */
+
+.minaret-window {
+    position: absolute;
+
+    bottom: 101px;
+
+    width: 14px;
+    height: 29px;
+
+    background:
+        rgba(255,238,199,.11);
+
+    border-radius:
+        8px 8px 2px 2px;
+
+    z-index: 6;
+}
+
+.minaret-window-left {
+    left:
+        calc(6% + 15px);
+}
+
+.minaret-window-right {
+    right:
+        calc(6% + 15px);
+}
+
+.minaret-window-2 {
+    bottom: 50px;
+}
+
+/* =========================================================
+   MOSQUE LIGHT
+========================================================= */
+
+.mosque-light {
+    position: absolute;
+
+    left: 50%;
+    bottom: 83px;
+
+    width: 200px;
+    height: 135px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(247,208,137,.25),
+            transparent 70%
+        );
+
+    filter:
+        blur(9px);
+
+    z-index: 2;
+
+    animation:
+        mosqueLight 4s ease-in-out infinite;
+
+    will-change: transform, opacity;
+}
+
+@keyframes mosqueLight {
+    0%,100% {
+        opacity: .45;
+
+        transform:
+            translate3d(-50%,0,0)
+            scale(.92);
+    }
+
+    50% {
+        opacity: .92;
+
+        transform:
+            translate3d(-50%,0,0)
+            scale(1.07);
+    }
+}
+
+/* =========================================================
+   RAMADAN DECORATION LAYER
+========================================================= */
+
+.ramadan-decor {
+    position: absolute;
+
+    left: 50%;
+    bottom: 16px;
+
+    width: 700px;
+    height: 270px;
+
+    transform:
+        translateX(-50%);
+
+    pointer-events: none;
+
+    z-index: 8;
+
+    transition:
+        opacity .6s ease;
+}
+
+/* jangan menghalangi scene */
+
+.ramadan-decor > * {
+    pointer-events: none;
+}
+
+/* =========================================================
+   BEDUG
+========================================================= */
+
+.bedug {
+    position: absolute;
+
+    bottom: 14px;
+    left: 5%;
+
+    width: 108px;
+    height: 72px;
+
+    transform-origin:
+        center bottom;
+
+    animation:
+        bedugFloat 5s ease-in-out infinite;
+
+    will-change: transform;
+}
+
+.bedug-body {
+    position: absolute;
+
+    left: 15px;
+    top: 12px;
+
+    width: 78px;
+    height: 48px;
+
+    border-radius:
+        20px 25px 25px 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #73502f,
+            #a97843 24%,
+            #7e572f 48%,
+            #ad7b46 75%,
+            #68482b
+        );
+
+    border:
+        2px solid rgba(65,43,25,.4);
+
+    box-shadow:
+        0 12px 22px rgba(55,38,22,.16),
+        inset 0 2px 5px rgba(255,224,171,.22),
+        inset 0 -4px 7px rgba(35,23,13,.18);
+}
+
+.bedug-body::before,
+.bedug-body::after {
+    content: "";
+
+    position: absolute;
+
+    top: 5px;
+    bottom: 5px;
+
+    width: 4px;
+
+    border-radius: 4px;
+
+    background:
+        rgba(255,220,161,.4);
+}
+
+.bedug-body::before {
+    left: 17px;
+}
+
+.bedug-body::after {
+    right: 17px;
+}
+
+.bedug-ring {
+    position: absolute;
+
+    top: 7px;
+
+    width: 22px;
+    height: 58px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            #d9c097 0 38%,
+            #8a6339 40% 54%,
+            #5e4025 57% 100%
+        );
+
+    box-shadow:
+        inset 0 0 7px rgba(55,35,18,.3);
+}
+
+.bedug-ring.left {
+    left: 7px;
+}
+
+.bedug-ring.right {
+    right: 7px;
+}
+
+.bedug-rope {
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 3px;
+    height: 77px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        #80603a;
+
+    border-radius: 5px;
+}
+
+.bedug-rope::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: -3px;
+
+    width: 17px;
+    height: 17px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        #76512d;
+
+    box-shadow:
+        0 2px 4px rgba(45,28,14,.2);
+}
+
+.bedug-stand {
+    position: absolute;
+
+    left: 9px;
+    right: 9px;
+    bottom: 0;
+
+    height: 15px;
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #5e4025,
+            #8c6238,
+            #5e4025
+        );
+}
+
+.bedug-leg {
+    position: absolute;
+
+    bottom: -2px;
+
+    width: 8px;
+    height: 25px;
+
+    background:
+        #654527;
+
+    border-radius: 3px;
+}
+
+.bedug-leg.left {
+    left: 16px;
+
+    transform:
+        rotate(7deg);
+}
+
+.bedug-leg.right {
+    right: 16px;
+
+    transform:
+        rotate(-7deg);
+}
+
+@keyframes bedugFloat {
+    0%,100% {
+        transform:
+            translate3d(0,0,0)
+            rotate(-1deg);
+    }
+
+    50% {
+        transform:
+            translate3d(0,-4px,0)
+            rotate(1deg);
+    }
+}
+
+/* =========================================================
+   RAMADAN BANNER
+========================================================= */
+
+.ramadan-banner {
+    position: absolute;
+
+    left: 50%;
+    top: 10px;
+
+    width: 165px;
+    height: 34px;
+
+    transform:
+        translateX(-50%);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid rgba(132,101,59,.24);
+
+    border-radius:
+        7px;
+
+    background:
+        rgba(255,247,226,.22);
+
+    color:
+        rgba(117,86,48,.72);
+
+    font-size: 8px;
+
+    font-weight: 900;
+
+    letter-spacing: .17em;
+
+    text-transform: uppercase;
+
+    backdrop-filter:
+        blur(5px);
+
+    -webkit-backdrop-filter:
+        blur(5px);
+}
+
+body.night .ramadan-banner {
+    background:
+        rgba(255,255,255,.06);
+
+    border-color:
+        rgba(255,255,255,.12);
+
+    color:
+        rgba(232,210,169,.75);
+}
+
+/* =========================================================
+   DECORATIVE CRESCENT
+========================================================= */
+
+.scene-crescent {
+    position: absolute;
+
+    left: 50%;
+    top: 52px;
+
+    width: 26px;
+    height: 26px;
+
+    transform:
+        translateX(-50%)
+        rotate(-20deg);
+
+    border:
+        3px solid rgba(157,120,70,.4);
+
+    border-left-color:
+        transparent;
+
+    border-bottom-color:
+        transparent;
+
+    border-radius: 50%;
+
+    opacity: .65;
+}
+
+/* =========================================================
+   LITTLE STARS IN SCENE
+========================================================= */
+
+.scene-star {
+    position: absolute;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(193,153,95,.58);
+
+    box-shadow:
+        0 0 9px rgba(230,194,127,.35);
+
+    animation:
+        sceneStar 3.5s ease-in-out infinite;
+
+    will-change: transform, opacity;
+}
+
+.scene-star-1 {
+    left: 23%;
+    top: 52px;
+}
+
+.scene-star-2 {
+    right: 24%;
+    top: 39px;
+    animation-delay: -1.2s;
+}
+
+.scene-star-3 {
+    right: 14%;
+    top: 91px;
+    animation-delay: -2.1s;
+}
+
+@keyframes sceneStar {
+    0%,100% {
+        opacity: .25;
+        transform:
+            scale(.75);
+    }
+
+    50% {
+        opacity: .8;
+        transform:
+            scale(1.25);
+    }
+}
+
+/* =========================================================
+   EID GATE
+========================================================= */
+
+.eid-gate {
+    position: absolute;
+
+    left: 50%;
+    bottom: 14px;
+
+    width: 250px;
+    height: 116px;
+
+    transform:
+        translateX(-50%);
+
+    opacity: 0;
+
+    transition:
+        opacity .6s ease;
+
+    pointer-events: none;
+}
+
+body.eid .eid-gate {
+    opacity: 1;
+}
+
+.eid-gate-left,
+.eid-gate-right {
+    position: absolute;
+
+    bottom: 0;
+
+    width: 32px;
+    height: 92px;
+
+    border-radius:
+        8px 8px 0 0;
+
+    background:
+        rgba(127,94,55,.45);
+
+    border:
+        1px solid rgba(255,240,205,.2);
+}
+
+.eid-gate-left {
+    left: 17px;
+}
+
+.eid-gate-right {
+    right: 17px;
+}
+
+.eid-gate-top {
+    position: absolute;
+
+    left: 50%;
+    top: 5px;
+
+    width: 205px;
+    height: 40px;
+
+    transform:
+        translateX(-50%);
+
+    border:
+        2px solid rgba(127,94,55,.42);
+
+    border-bottom: 0;
+
+    border-radius:
+        110px 110px 0 0;
+}
+
+.eid-gate-top::after {
+    content:
+        "SELAMAT IDUL FITRI";
+
+    position: absolute;
+
+    left: 50%;
+    top: 11px;
+
+    transform:
+        translateX(-50%);
+
+    white-space: nowrap;
+
+    font-size: 7px;
+
+    font-weight: 900;
+
+    letter-spacing: .14em;
+
+    color:
+        rgba(127,94,55,.65);
+}
+
+/* =========================================================
+   KETUPAT SCENE
+========================================================= */
+
+.ketupat-scene {
+    display: none;
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 4px;
+
+    width:
+        min(
+            520px,
+            100%
+        );
+
+    height: 225px;
+
+    transform:
+        translateX(-50%);
+
+    align-items: flex-end;
+    justify-content: center;
+
+    z-index: 9;
+
+    pointer-events: none;
+}
+
+body.ketupat .ketupat-scene {
+    display: flex;
+}
+
+.ketupat {
+    position: relative;
+
+    width: 110px;
+    height: 140px;
+
+    margin:
+        0 8px;
+
+    transform-origin:
+        center bottom;
+
+    animation:
+        ketupatSway 4.5s ease-in-out infinite;
+
+    will-change: transform;
+}
+
+.ketupat-2 {
+    animation-delay: -1.5s;
+    animation-name:
+        ketupatSwayCenter;
+}
+
+.ketupat-3 {
+    animation-delay: -3s;
+    animation-name:
+        ketupatSwaySmall;
+}
+
+.ketupat-body {
+    position: absolute;
+
+    left: 50%;
+    bottom: 18px;
+
+    width: 78px;
+    height: 90px;
+
+    transform:
+        translateX(-50%)
+        rotate(45deg);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(90,140,70,.9) 0%,
+            rgba(120,170,90,.95) 40%,
+            rgba(70,120,55,.92) 100%
+        );
+
+    border:
+        2px solid rgba(50,90,40,.45);
+
+    box-shadow:
+        0 8px 22px rgba(40,70,30,.25),
+        inset 0 0 12px rgba(255,255,255,.18);
+
+    border-radius: 6px;
+}
+
+.ketupat-body::before,
+.ketupat-body::after {
+    content: "";
+
+    position: absolute;
+
+    background:
+        rgba(255,255,255,.12);
+}
+
+.ketupat-body::before {
+    left: 8px;
+    right: 8px;
+    top: 18px;
+    height: 2px;
+
+    box-shadow:
+        0 22px 0 rgba(255,255,255,.1),
+        0 44px 0 rgba(255,255,255,.08);
+}
+
+.ketupat-body::after {
+    top: 8px;
+    bottom: 8px;
+    left: 18px;
+    width: 2px;
+
+    box-shadow:
+        22px 0 0 rgba(255,255,255,.1),
+        44px 0 0 rgba(255,255,255,.08);
+}
+
+.ketupat-string {
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 2px;
+    height: 28px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(90,60,30,.5),
+            rgba(90,60,30,.25)
+        );
+}
+
+.ketupat-leaf {
+    position: absolute;
+
+    left: 50%;
+    top: 20px;
+
+    width: 14px;
+    height: 22px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        rgba(70,120,50,.7);
+
+    border-radius:
+        50% 50% 40% 40%;
+
+    box-shadow:
+        -10px 4px 0 rgba(70,120,50,.45),
+        10px 4px 0 rgba(70,120,50,.45);
+}
+
+.ketupat-ground {
+    position: absolute;
+
+    left: 50%;
+    bottom: 0;
+
+    width: 340px;
+    height: 16px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        currentColor;
+
+    opacity: .35;
+
+    border-radius: 50%;
+}
+
+@keyframes ketupatSway {
+    0%,100% {
+        transform:
+            rotate(-4deg)
+            translate3d(0,0,0);
+    }
+
+    50% {
+        transform:
+            rotate(4deg)
+            translate3d(0,-6px,0);
+    }
+}
+
+@keyframes ketupatSwayCenter {
+    0%,100% {
+        transform:
+            scale(.88)
+            rotate(3deg)
+            translate3d(0,0,0);
+    }
+
+    50% {
+        transform:
+            scale(.88)
+            rotate(-3deg)
+            translate3d(0,-7px,0);
+    }
+}
+
+@keyframes ketupatSwaySmall {
+    0%,100% {
+        transform:
+            scale(.78)
+            rotate(-3deg)
+            translate3d(0,0,0);
+    }
+
+    50% {
+        transform:
+            scale(.78)
+            rotate(4deg)
+            translate3d(0,-5px,0);
+    }
+}
+
+/* =========================================================
+   RAMADAN / EID STATE
+========================================================= */
+
+body.ketupat .label {
+    color: #6b8f4e;
+}
+
+body.night.ketupat .label {
+    color: #a8c98a;
+}
+
+body.ketupat .ramadan-status {
+    color: #5a7a42;
+
+    background:
+        rgba(120,170,90,.18);
+
+    border-color:
+        rgba(120,170,90,.35);
+}
+
+body.night.ketupat .ramadan-status {
+    color: #c5e0a8;
+}
+
+/*
+   Saat Ramadan/Lebaran:
+   masjid TETAP tampil.
+   Ketupat menjadi lapisan depan dekorasi.
+*/
+
+body.ketupat .mosque {
+    opacity: .94;
+}
+
+body.eid .ketupat-scene {
+    display: flex;
+}
+
+body.eid .ramadan-banner {
+    display: none;
+}
+
+body.eid .ramadan-status {
+    color:
+        #80602f;
+
+    background:
+        rgba(231,194,125,.2);
+
+    border-color:
+        rgba(190,147,78,.36);
+}
+
+body.night.eid .ramadan-status {
+    color:
+        #e5cb96;
+
+    background:
+        rgba(214,177,103,.1);
+
+    border-color:
+        rgba(230,199,137,.25);
+}
+
+/* =========================================================
+   FASTING BAR
+========================================================= */
+
+.fasting-bar {
+    display: none;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 10px;
+
+    margin-bottom: 14px;
+}
+
+body.ketupat .fasting-bar {
+    display: grid;
+}
+
+.fasting-item {
+    position: relative;
+
+    padding:
+        14px 16px;
+
+    border-radius: 16px;
+
+    background:
+        rgba(120,170,90,.15);
+
+    border:
+        1px solid rgba(120,170,90,.35);
+
+    text-align: center;
+
+    overflow: hidden;
+}
+
+body.night .fasting-item {
+    background:
+        rgba(120,170,90,.12);
+
+    border-color:
+        rgba(160,200,130,.25);
+}
+
+.fasting-item.buka {
+    background:
+        rgba(210,150,70,.16);
+
+    border-color:
+        rgba(210,150,70,.4);
+}
+
+body.night .fasting-item.buka {
+    background:
+        rgba(210,150,70,.14);
+
+    border-color:
+        rgba(230,180,100,.3);
+}
+
+.fasting-label {
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+
+    color: #5a7a42;
+}
+
+body.night .fasting-label {
+    color: #a8c98a;
+}
+
+.fasting-item.buka .fasting-label {
+    color: #8a6230;
+}
+
+body.night .fasting-item.buka .fasting-label {
+    color: #e0c080;
+}
+
+.fasting-time {
+    margin-top: 6px;
+
+    font-size: 26px;
+
+    font-weight: 900;
+
+    letter-spacing: -.04em;
+
+    font-variant-numeric:
+        tabular-nums;
+}
+
+.fasting-hint {
+    margin-top: 4px;
+
+    font-size: 9px;
+
+    opacity: .7;
+}
+
+/* =========================================================
+   COUNTDOWN
+========================================================= */
+
+.countdown {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
+    gap: 11px;
+
+    max-width: 760px;
+
+    margin:
+        2px auto 0;
+
+    z-index: 12;
+}
+
+.time-box {
+    position: relative;
+
+    padding:
+        20px 10px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.19);
+
+    border:
+        1px solid rgba(255,255,255,.4);
+
+    box-shadow:
+        0 14px 35px rgba(70,54,33,.07),
+        inset 0 1px 0 rgba(255,255,255,.35);
+
+    overflow: hidden;
+
+    transition:
+        transform .3s ease,
+        background .3s ease;
+}
+
+.time-box::before {
+    content: "";
+
+    position: absolute;
+
+    left: -30%;
+    top: -80%;
+
+    width: 160%;
+    height: 120%;
+
+    background:
+        linear-gradient(
+            110deg,
+            transparent 42%,
+            rgba(255,255,255,.16) 50%,
+            transparent 58%
+        );
+
+    transform:
+        translateX(-60%);
+
+    animation:
+        glassShine 5s ease-in-out infinite;
+
+    will-change: transform;
+}
+
+@keyframes glassShine {
+    0%,60%,100% {
+        transform:
+            translate3d(-70%,0,0);
+    }
+
+    80% {
+        transform:
+            translate3d(70%,0,0);
+    }
+}
+
+.time-box:hover {
+    transform:
+        translateY(-5px);
+
+    background:
+        rgba(255,255,255,.3);
+}
+
+.time-number {
+    position: relative;
+
+    display: block;
+
+    font-size:
+        clamp(27px,5vw,45px);
+
+    line-height: 1;
+
+    font-weight: 900;
+
+    letter-spacing: -.06em;
+
+    font-variant-numeric:
+        tabular-nums;
+}
+
+.time-label {
+    position: relative;
+
+    display: block;
+
+    margin-top: 9px;
+
+    color:
+        #786d5d;
+
+    font-size: 9px;
+
+    font-weight: 850;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+body.night .time-label {
+    color:
+        #bdb3a2;
+}
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0,1.35fr)
+        minmax(290px,.65fr);
+
+    gap: 18px;
+
+    margin-top: 18px;
+}
+
+.card {
+    border-radius: 25px;
+
+    padding: 23px;
+
+    animation:
+        reveal .9s .25s ease both;
+}
+
+.card-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+.card-title h3 {
+    font-size: 19px;
+
+    letter-spacing: -.03em;
+}
+
+.card-title p {
+    margin-top: 4px;
+
+    color:
+        #786d5d;
+
+    font-size: 11px;
+}
+
+body.night .card-title p {
+    color:
+        #b8af9e;
+}
+
+/* =========================================================
+   CITY
+========================================================= */
+
+.city-select {
+    width: 165px;
+
+    padding:
+        11px 13px;
+
+    border-radius: 13px;
+
+    border:
+        1px solid rgba(255,255,255,.5);
+
+    background:
+        rgba(255,255,255,.22);
+
+    color:
+        inherit;
+
+    outline: none;
+
+    font:
+        inherit;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+.city-select option {
+    color:
+        #302b24;
+
+    background:
+        #f5ead7;
+}
+
+/* =========================================================
+   PRAYERS
+========================================================= */
+
+.prayers {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap: 9px;
+}
+
+.prayer {
+    position: relative;
+
+    padding:
+        15px;
+
+    border-radius: 17px;
+
+    background:
+        rgba(255,255,255,.15);
+
+    border:
+        1px solid rgba(255,255,255,.3);
+
+    overflow: hidden;
+
+    transition:
+        transform .25s ease,
+        background .25s ease,
+        border .25s ease;
+}
+
+.prayer::after {
+    content: "";
+
+    position: absolute;
+
+    width: 60px;
+    height: 60px;
+
+    right: -30px;
+    bottom: -30px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,219,155,.12);
+}
+
+.prayer:hover {
+    transform:
+        translateY(-3px);
+
+    background:
+        rgba(255,255,255,.25);
+}
+
+.prayer.active {
+    background:
+        rgba(255,255,255,.38);
+
+    border-color:
+        rgba(255,255,255,.65);
+
+    box-shadow:
+        0 12px 30px rgba(80,61,38,.09);
+}
+
+.prayer.active::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 3px;
+
+    background:
+        #a48760;
+
+    box-shadow:
+        0 0 14px rgba(164,135,96,.55);
+}
+
+.prayer-name {
+    color:
+        #786d5d;
+
+    font-size: 10px;
+
+    font-weight: 750;
+}
+
+body.night .prayer-name {
+    color:
+        #bcb19f;
+}
+
+.prayer-time {
+    margin-top: 6px;
+
+    font-size: 21px;
+
+    font-weight: 850;
+
+    letter-spacing: -.04em;
+
+    font-variant-numeric:
+        tabular-nums;
+}
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.info {
+    min-height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.info-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding:
+        13px 0;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.25);
+}
+
+.info-row:last-of-type {
+    border-bottom: 0;
+}
+
+.info-label {
+    color:
+        #786d5d;
+
+    font-size: 11px;
+}
+
+body.night .info-label {
+    color:
+        #b9af9e;
+}
+
+.info-value {
+    text-align: right;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+.api-status {
+    margin-top: auto;
+
+    padding-top: 18px;
+
+    color:
+        #786d5d;
+
+    font-size: 10px;
+
+    line-height: 1.6;
+}
+
+body.night .api-status {
+    color:
+        #aaa190;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+    padding-top: 20px;
+
+    text-align: center;
+
+    color:
+        #786d5d;
+
+    font-size: 10px;
+
+    line-height: 1.7;
+}
+
+body.night .footer {
+    color:
+        #aaa190;
+}
+
+.footer-arabic {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-family:
+        "Noto Naskh Arabic",
+        "Amiri",
+        serif;
+
+    font-size: 16px;
+
+    opacity: .7;
+}
+
+/* =========================================================
+   SPLASH
+========================================================= */
+
+.splash {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255,255,255,.38),
+            rgba(232,216,189,.84)
+        );
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+    transition:
+        opacity .9s ease,
+        visibility .9s ease,
+        backdrop-filter .9s ease;
+}
+
+body.night .splash {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(78,73,63,.25),
+            rgba(10,12,16,.9)
+        );
+}
+
+.splash.hidden {
+    opacity: 0;
+    visibility: hidden;
+
+    backdrop-filter:
+        blur(0);
+
+    -webkit-backdrop-filter:
+        blur(0);
+}
+
+.splash-card {
+    position: relative;
+
+    width:
+        min(440px,100%);
+
+    padding:
+        38px 28px;
+
+    border-radius: 32px;
+
+    text-align: center;
+
+    background:
+        rgba(255,250,239,.31);
+
+    border:
+        1px solid rgba(255,255,255,.62);
+
+    box-shadow:
+        0 35px 100px rgba(60,46,29,.2),
+        inset 0 1px 0 rgba(255,255,255,.7);
+
+    backdrop-filter:
+        blur(13px);
+
+    -webkit-backdrop-filter:
+        blur(13px);
+
+    animation:
+        splashIn .9s ease both;
+}
+
+.splash-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    left: 50%;
+    top: -100px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,218,148,.24),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+.splash-icon {
+    position: relative;
+
+    width: 78px;
+    height: 78px;
+
+    margin:
+        0 auto 21px;
+
+    border-radius: 50%;
+
+    background:
+        #9c7c55;
+
+    box-shadow:
+        0 0 45px rgba(210,169,103,.22);
+
+    animation:
+        iconFloat 4s ease-in-out infinite;
+}
+
+.splash-icon::after {
+    content: "";
+
+    position: absolute;
+
+    left: 23px;
+    top: -9px;
+
+    width: 78px;
+    height: 78px;
+
+    border-radius: 50%;
+
+    background:
+        #ead9bd;
+}
+
+body.night .splash-icon::after {
+    background:
+        #22252b;
+}
+
+@keyframes iconFloat {
+    0%,100% {
+        transform:
+            translate3d(0,0,0)
+            rotate(-4deg);
+    }
+
+    50% {
+        transform:
+            translate3d(0,-8px,0)
+            rotate(4deg);
+    }
+}
+
+.splash-arabic {
+    font-family:
+        "Noto Naskh Arabic",
+        "Amiri",
+        "Times New Roman",
+        serif;
+
+    font-size: 28px;
+
+    color:
+        #97754d;
+
+    margin-bottom: 6px;
+}
+
+body.night .splash-arabic {
+    color:
+        #d7bd8c;
+}
+
+.splash-card h2 {
+    font-size: 29px;
+
+    letter-spacing: -.05em;
+}
+
+.splash-card p {
+    margin-top: 10px;
+
+    color:
+        #786d5d;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+body.night .splash-card p {
+    color:
+        #b9af9e;
+}
+
+.open-button {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 16px;
+
+    border-radius: 17px;
+
+    border:
+        1px solid rgba(255,255,255,.67);
+
+    background:
+        rgba(255,255,255,.3);
+
+    color:
+        inherit;
+
+    font:
+        inherit;
+
+    font-size: 13px;
+
+    font-weight: 850;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 14px 35px rgba(70,53,32,.09),
+        inset 0 1px 0 rgba(255,255,255,.58);
+
+    transition:
+        transform .2s ease,
+        background .2s ease;
+}
+
+.open-button:hover {
+    transform:
+        translateY(-3px);
+
+    background:
+        rgba(255,255,255,.46);
+}
+
+.open-button:active {
+    transform:
+        translateY(0);
+}
+
+.open-button:disabled {
+    opacity: .65;
+    cursor: default;
+    transform: none;
+}
+
+.sound-info {
+    margin-top: 11px;
+
+    color:
+        #8a7e6e;
+
+    font-size: 9px;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes reveal {
+    from {
+        opacity: 0;
+
+        transform:
+            translate3d(0,18px,0);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translate3d(0,0,0);
+    }
+}
+
+@keyframes splashIn {
+    from {
+        opacity: 0;
+
+        transform:
+            translate3d(0,20px,0)
+            scale(.96);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translate3d(0,0,0)
+            scale(1);
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:800px) {
+
+    .content {
+        grid-template-columns:
+            1fr;
+    }
+
+    .info {
+        min-height:
+            auto;
+    }
+
+    .mosque {
+        transform:
+            scale(.9);
+
+        transform-origin:
+            center bottom;
+    }
+
+    .ramadan-decor {
+        transform:
+            translateX(-50%)
+            scale(.92);
+
+        transform-origin:
+            center bottom;
+    }
+}
+
+@media (max-width:620px) {
+
+    .app {
+        width:
+            calc(100% - 14px);
+
+        padding-top: 8px;
+    }
+
+    .header {
+        padding:
+            14px;
+
+        border-radius:
+            19px;
+    }
+
+    .system-status {
+        display:
+            none;
+    }
+
+    .hero {
+        padding:
+            25px 13px 22px;
+
+        border-radius:
+            24px;
+    }
+
+    .hero h2 {
+        font-size:
+            34px;
+    }
+
+    .hero-description {
+        font-size:
+            12px;
+    }
+
+    .arabic {
+        font-size:
+            26px;
+    }
+
+    .ramadan-status {
+        font-size:
+            8px;
+    }
+
+    .mosque-wrapper {
+        height:
+            275px;
+    }
+
+    .mosque {
+        transform:
+            scale(.68);
+
+        transform-origin:
+            center bottom;
+
+        width:
+            690px;
+    }
+
+    .moon {
+        right:
+            4%;
+    }
+
+    .minaret-left {
+        left:
+            6%;
+    }
+
+    .minaret-right {
+        right:
+            6%;
+    }
+
+    .ramadan-decor {
+        width:
+            690px;
+
+        transform:
+            translateX(-50%)
+            scale(.68);
+
+        transform-origin:
+            center bottom;
+    }
+
+    .bedug {
+        left:
+            4%;
+    }
+
+    .ketupat-scene {
+        transform:
+            translateX(-50%)
+            scale(.78);
+
+        transform-origin:
+            center bottom;
+    }
+
+    .eid-gate {
+        transform:
+            translateX(-50%)
+            scale(.78);
+
+        transform-origin:
+            center bottom;
+    }
+
+    .countdown {
+        gap:
+            7px;
+    }
+
+    .time-box {
+        padding:
+            15px 5px;
+
+        border-radius:
+            16px;
+    }
+
+    .time-number {
+        font-size:
+            26px;
+    }
+
+    .time-label {
+        font-size:
+            8px;
+    }
+
+    .content {
+        gap:
+            13px;
+
+        margin-top:
+            13px;
+    }
+
+    .card {
+        padding:
+            18px;
+
+        border-radius:
+            21px;
+    }
+
+    .card-header {
+        flex-direction:
+            column;
+    }
+
+    .city-select {
+        width:
+            100%;
+    }
+
+    .prayers {
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+    }
+
+    .lantern {
+        transform:
+            scale(.75);
+    }
+
+    .lantern-left {
+        left:
+            -4px;
+    }
+
+    .lantern-right {
+        right:
+            -4px;
+    }
+
+    .geo {
+        transform:
+            scale(.75)
+            rotate(45deg);
+    }
+}
+
+@media (max-width:380px) {
+
+    .countdown {
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+    }
+
+    .prayers {
+        grid-template-columns:
+            1fr;
+    }
+
+    .hero h2 {
+        font-size:
+            31px;
+    }
+
+    .mosque-wrapper {
+        height:
+            255px;
+    }
+
+    .mosque {
+        transform:
+            scale(.58);
+
+        transform-origin:
+            center bottom;
+    }
+
+    .ramadan-decor {
+        transform:
+            translateX(-50%)
+            scale(.58);
+    }
+
+    .ketupat-scene {
+        transform:
+            translateX(-50%)
+            scale(.65);
+    }
+
+    .eid-gate {
+        transform:
+            translateX(-50%)
+            scale(.65);
+    }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion:reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        scroll-behavior:
+            auto !important;
+    }
+}
+
+</style>
+</head>
+
+<body class="day">
+
+<!-- =========================================================
+     BACKGROUND
+========================================================= -->
+
+<div class="pattern"></div>
+
+<div class="background">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+
+<div class="stars">
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+</div>
+
+<div class="ornaments">
+    <span class="geo geo-1"></span>
+    <span class="geo geo-2"></span>
+    <span class="geo geo-3"></span>
+    <span class="geo geo-4"></span>
+</div>
+
+<!-- =========================================================
+     LANTERNS
+========================================================= -->
+
+<div class="lanterns">
+
+    <div class="lantern lantern-left">
+        <div class="lantern-body"></div>
+    </div>
+
+    <div class="lantern lantern-right">
+        <div class="lantern-body"></div>
+    </div>
+
+</div>
+
+<!-- =========================================================
+     SPLASH
+========================================================= -->
+
+<div class="splash" id="splash">
+
+    <div class="splash-card">
+
+        <div class="splash-icon"></div>
+
+        <div class="splash-arabic">
+            أَهْلًا رَمَضَان
+        </div>
+
+        <h2>
+            Ramadhan Countdown
+        </h2>
+
+        <p>
+            Bersiap menyambut Ramadhan dan
+            Lebaran penuh keberkahan.
+        </p>
+
+        <button
+            class="open-button"
+            id="openButton"
+        >
+            Buka Countdown
+        </button>
+
+        <div class="sound-info">
+            Musik akan mulai setelah countdown dibuka.
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     AUDIO
+========================================================= -->
+
+<audio
+    id="backgroundMusic"
+    preload="auto"
+    loop
+></audio>
+
+<!-- =========================================================
+     APP
+========================================================= -->
+
+<main class="app">
+
+<header class="header glass">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            ☾
+        </div>
+
+        <div>
+
+            <h1>
+                Ramadhan Indonesia
+            </h1>
+
+            <p>
+                Countdown Ramadhan & Lebaran
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="system-status">
+
+        <span class="status-dot"></span>
+
+        <span id="systemStatus">
+            Memuat...
+        </span>
+
+    </div>
+
+</header>
+
+<section class="hero glass">
+
+    <div class="label">
+        SUASANA HITUNG MUNDUR
+    </div>
+
+    <h2 id="ramadanTitle">
+        Menuju Ramadhan
+    </h2>
+
+    <div
+        class="arabic"
+        id="arabicGreeting"
+    >
+        أَهْلًا وَسَهْلًا يَا رَمَضَان
+    </div>
+
+    <p
+        class="hero-description"
+        id="ramadanDescription"
+    >
+        Mengambil kalender Hijriah...
+    </p>
+
+    <div
+        class="ramadan-status"
+        id="ramadanStatus"
+    >
+        Menanti datangnya bulan suci
+    </div>
+
+    <!-- =====================================================
+         MASJID SCENE
+    ====================================================== -->
+
+    <div class="mosque-wrapper">
+
+        <div class="moon"></div>
+
+        <div class="moon-star">
+            ✦
+        </div>
+
+        <!-- MASJID -->
+
+        <div class="mosque">
+
+            <div class="mosque-light"></div>
+
+            <div class="mosque-ground"></div>
+
+            <div class="mosque-platform"></div>
+
+            <div class="mosque-path"></div>
+
+            <!-- MENARA -->
+
+            <div class="minaret minaret-left"></div>
+            <div class="minaret minaret-right"></div>
+
+            <div class="minaret-detail minaret-detail-left"></div>
+            <div class="minaret-detail minaret-detail-right"></div>
+
+            <div class="minaret-balcony minaret-balcony-left"></div>
+            <div class="minaret-balcony minaret-balcony-right"></div>
+
+            <div class="minaret-cap minaret-cap-left"></div>
+            <div class="minaret-cap minaret-cap-right"></div>
+
+            <div class="minaret-spire minaret-spire-left"></div>
+            <div class="minaret-spire minaret-spire-right"></div>
+
+            <div class="minaret-window minaret-window-left"></div>
+            <div class="minaret-window minaret-window-right"></div>
+
+            <div class="minaret-window minaret-window-left minaret-window-2"></div>
+            <div class="minaret-window minaret-window-right minaret-window-2"></div>
+
+            <!-- BANGUNAN -->
+
+            <div class="mosque-main"></div>
+
+            <div class="mosque-roof"></div>
+
+            <!-- KUBAH -->
+
+            <div class="dome"></div>
+
+            <div class="dome-neck"></div>
+
+            <div class="dome-spire"></div>
+
+            <div class="dome-ball"></div>
+
+            <div class="dome-crescent"></div>
+
+            <!-- PILAR -->
+
+            <div class="front-pillars">
+
+                <span class="front-pillar front-pillar-1"></span>
+                <span class="front-pillar front-pillar-2"></span>
+                <span class="front-pillar front-pillar-3"></span>
+                <span class="front-pillar front-pillar-4"></span>
+
+            </div>
+
+            <!-- JENDELA -->
+
+            <div class="mosque-window window-left"></div>
+            <div class="mosque-window window-mid-left"></div>
+            <div class="mosque-window window-mid-right"></div>
+            <div class="mosque-window window-right"></div>
+
+            <!-- PINTU -->
+
+            <div class="main-door"></div>
+
+        </div>
+
+        <!-- =================================================
+             RAMADAN DECORATION
+        ================================================== -->
+
+        <div class="ramadan-decor">
+
+            <div class="ramadan-banner">
+                RAMADAN KAREEM
+            </div>
+
+            <div class="scene-crescent"></div>
+
+            <span class="scene-star scene-star-1"></span>
+            <span class="scene-star scene-star-2"></span>
+            <span class="scene-star scene-star-3"></span>
+
+            <!-- BEDUG -->
+
+            <div class="bedug">
+
+                <div class="bedug-rope"></div>
+
+                <div class="bedug-ring left"></div>
+                <div class="bedug-ring right"></div>
+
+                <div class="bedug-body"></div>
+
+                <div class="bedug-stand"></div>
+
+                <div class="bedug-leg left"></div>
+                <div class="bedug-leg right"></div>
+
+            </div>
+
+        </div>
+
+        <!-- =================================================
+             EID GATE
+        ================================================== -->
+
+        <div class="eid-gate">
+
+            <div class="eid-gate-left"></div>
+
+            <div class="eid-gate-right"></div>
+
+            <div class="eid-gate-top"></div>
+
+        </div>
+
+        <!-- =================================================
+             KETUPAT
+        ================================================== -->
+
+        <div class="ketupat-scene">
+
+            <div class="ketupat ketupat-1">
+
+                <div class="ketupat-string"></div>
+
+                <div class="ketupat-leaf"></div>
+
+                <div class="ketupat-body"></div>
+
+            </div>
+
+            <div class="ketupat ketupat-2">
+
+                <div class="ketupat-string"></div>
+
+                <div class="ketupat-leaf"></div>
+
+                <div class="ketupat-body"></div>
+
+            </div>
+
+            <div class="ketupat ketupat-3">
+
+                <div class="ketupat-string"></div>
+
+                <div class="ketupat-leaf"></div>
+
+                <div class="ketupat-body"></div>
+
+            </div>
+
+            <div class="ketupat-ground"></div>
+
+        </div>
+
+    </div>
+
+    <!-- COUNTDOWN -->
+
+    <div class="countdown">
+
+        <div class="time-box">
+
+            <span
+                class="time-number"
+                id="days"
+            >
+                00
+            </span>
+
+            <span class="time-label">
+                Hari
+            </span>
+
+        </div>
+
+        <div class="time-box">
+
+            <span
+                class="time-number"
+                id="hours"
+            >
+                00
+            </span>
+
+            <span class="time-label">
+                Jam
+            </span>
+
+        </div>
+
+        <div class="time-box">
+
+            <span
+                class="time-number"
+                id="minutes"
+            >
+                00
+            </span>
+
+            <span class="time-label">
+                Menit
+            </span>
+
+        </div>
+
+        <div class="time-box">
+
+            <span
+                class="time-number"
+                id="seconds"
+            >
+                00
+            </span>
+
+            <span class="time-label">
+                Detik
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     CONTENT
+========================================================= -->
+
+<section class="content">
+
+    <section class="card glass">
+
+        <div class="card-header">
+
+            <div class="card-title">
+
+                <h3>
+                    Jadwal Salat Hari Ini
+                </h3>
+
+                <p id="prayerDate">
+                    Memuat jadwal...
+                </p>
+
+            </div>
+
+            <select
+                class="city-select"
+                id="citySelect"
+            >
+
+                <option value="Jakarta">
+                    Jakarta
+                </option>
+
+                <option value="Bandung">
+                    Bandung
+                </option>
+
+                <option value="Surabaya">
+                    Surabaya
+                </option>
+
+                <option value="Medan">
+                    Medan
+                </option>
+
+                <option value="Makassar">
+                    Makassar
+                </option>
+
+                <option value="Semarang">
+                    Semarang
+                </option>
+
+                <option value="Yogyakarta">
+                    Yogyakarta
+                </option>
+
+                <option value="Palembang">
+                    Palembang
+                </option>
+
+                <option value="Depok">
+                    Depok
+                </option>
+
+                <option value="Tangerang">
+                    Tangerang
+                </option>
+
+                <option value="Bekasi">
+                    Bekasi
+                </option>
+
+                <option value="Denpasar">
+                    Denpasar
+                </option>
+
+                <option value="Bandar Lampung">
+                    Bandar Lampung
+                </option>
+
+                <option value="Banjarmasin">
+                    Banjarmasin
+                </option>
+
+                <option value="Balikpapan">
+                    Balikpapan
+                </option>
+
+                <option value="Padang">
+                    Padang
+                </option>
+
+                <option value="Pekanbaru">
+                    Pekanbaru
+                </option>
+
+                <option value="Pontianak">
+                    Pontianak
+                </option>
+
+                <option value="Manado">
+                    Manado
+                </option>
+
+                <option value="Mataram">
+                    Mataram
+                </option>
+
+                <option value="Jayapura">
+                    Jayapura
+                </option>
+
+            </select>
+
+        </div>
+
+        <div
+            class="fasting-bar"
+            id="fastingBar"
+        >
+
+            <div class="fasting-item imsak">
+
+                <div class="fasting-label">
+                    Imsak
+                </div>
+
+                <div
+                    class="fasting-time"
+                    id="fastingImsak"
+                >
+                    --:--
+                </div>
+
+                <div class="fasting-hint">
+                    Batas sahur
+                </div>
+
+            </div>
+
+            <div class="fasting-item buka">
+
+                <div class="fasting-label">
+                    Buka Puasa
+                </div>
+
+                <div
+                    class="fasting-time"
+                    id="fastingBuka"
+                >
+                    --:--
+                </div>
+
+                <div class="fasting-hint">
+                    Maghrib
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="prayers">
+
+            <div
+                class="prayer"
+                data-prayer="Imsak"
+            >
+
+                <div class="prayer-name">
+                    Imsak
+                </div>
+
+                <div
+                    class="prayer-time"
+                    id="imsak"
+                >
+                    --:--
+                </div>
+
+            </div>
+
+            <div
+                class="prayer"
+                data-prayer="Fajr"
+            >
+
+                <div class="prayer-name">
+                    Subuh
+                </div>
+
+                <div
+                    class="prayer-time"
+                    id="fajr"
+                >
+                    --:--
+                </div>
+
+            </div>
+
+            <div
+                class="prayer"
+                data-prayer="Dhuhr"
+            >
+
+                <div class="prayer-name">
+                    Dzuhur
+                </div>
+
+                <div
+                    class="prayer-time"
+                    id="dhuhr"
+                >
+                    --:--
+                </div>
+
+            </div>
+
+            <div
+                class="prayer"
+                data-prayer="Asr"
+            >
+
+                <div class="prayer-name">
+                    Ashar
+                </div>
+
+                <div
+                    class="prayer-time"
+                    id="asr"
+                >
+                    --:--
+                </div>
+
+            </div>
+
+            <div
+                class="prayer"
+                data-prayer="Maghrib"
+            >
+
+                <div class="prayer-name">
+                    Maghrib
+                </div>
+
+                <div
+                    class="prayer-time"
+                    id="maghrib"
+                >
+                    --:--
+                </div>
+
+            </div>
+
+            <div
+                class="prayer"
+                data-prayer="Isha"
+            >
+
+                <div class="prayer-name">
+                    Isya
+                </div>
+
+                <div
+                    class="prayer-time"
+                    id="isha"
+                >
+                    --:--
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <aside class="card glass info">
+
+        <div class="card-title">
+
+            <h3>
+                Informasi
+            </h3>
+
+            <p>
+                Waktu Indonesia
+            </p>
+
+        </div>
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Tanggal
+            </span>
+
+            <span
+                class="info-value"
+                id="currentDate"
+            >
+                --
+            </span>
+
+        </div>
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Jam
+            </span>
+
+            <span
+                class="info-value"
+                id="currentTime"
+            >
+                --
+            </span>
+
+        </div>
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Kota
+            </span>
+
+            <span
+                class="info-value"
+                id="currentCity"
+            >
+                Jakarta
+            </span>
+
+        </div>
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Target
+            </span>
+
+            <span
+                class="info-value"
+                id="targetDate"
+            >
+                --
+            </span>
+
+        </div>
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Suasana
+            </span>
+
+            <span
+                class="info-value"
+                id="timeMode"
+            >
+                Siang
+            </span>
+
+        </div>
+
+        <div
+            class="api-status"
+            id="apiStatus"
+        >
+            Jadwal salat menggunakan
+            perhitungan KEMENAG Indonesia.
+        </div>
+
+    </aside>
+
+</section>
+
+<footer class="footer">
+
+    <span class="footer-arabic">
+        رَمَضَان كَرِيم
+    </span>
+
+    Ramadhan Countdown Indonesia ·
+    Waktu mengikuti zona waktu Indonesia.
+
+</footer>
+
+</main>
+
+<script>
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const CONFIG = {
+
+    normalMusic:
+        "https://files.catbox.moe/y2d35b.mp3",
+
+    ramadanMusic:
+        "https://files.catbox.moe/g1r3hb.mp3",
+
+    eidMusic:
+        "https://files.catbox.moe/3eh1r5.mpeg",
+
+    api:
+        "https://api.aladhan.com/v1",
+
+    method:
+        20
+};
+
+/* =========================================================
+   CITY DATA
+========================================================= */
+
+const CITIES = {
+
+    Jakarta: {
+        city: "Jakarta",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Bandung: {
+        city: "Bandung",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Surabaya: {
+        city: "Surabaya",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Medan: {
+        city: "Medan",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Makassar: {
+        city: "Makassar",
+        country: "Indonesia",
+        timezone: "Asia/Makassar"
+    },
+
+    Semarang: {
+        city: "Semarang",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Yogyakarta: {
+        city: "Yogyakarta",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Palembang: {
+        city: "Palembang",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Depok: {
+        city: "Depok",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Tangerang: {
+        city: "Tangerang",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Bekasi: {
+        city: "Bekasi",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Denpasar: {
+        city: "Denpasar",
+        country: "Indonesia",
+        timezone: "Asia/Makassar"
+    },
+
+    "Bandar Lampung": {
+        city: "Bandar Lampung",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Banjarmasin: {
+        city: "Banjarmasin",
+        country: "Indonesia",
+        timezone: "Asia/Makassar"
+    },
+
+    Balikpapan: {
+        city: "Balikpapan",
+        country: "Indonesia",
+        timezone: "Asia/Makassar"
+    },
+
+    Padang: {
+        city: "Padang",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Pekanbaru: {
+        city: "Pekanbaru",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Pontianak: {
+        city: "Pontianak",
+        country: "Indonesia",
+        timezone: "Asia/Jakarta"
+    },
+
+    Manado: {
+        city: "Manado",
+        country: "Indonesia",
+        timezone: "Asia/Makassar"
+    },
+
+    Mataram: {
+        city: "Mataram",
+        country: "Indonesia",
+        timezone: "Asia/Makassar"
+    },
+
+    Jayapura: {
+        city: "Jayapura",
+        country: "Indonesia",
+        timezone: "Asia/Jayapura"
+    }
+};
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const $ = id =>
+    document.getElementById(id);
+
+const splash =
+    $("splash");
+
+const openButton =
+    $("openButton");
+
+const backgroundMusic =
+    $("backgroundMusic");
+
+const citySelect =
+    $("citySelect");
+
+const systemStatus =
+    $("systemStatus");
+
+const ramadanTitle =
+    $("ramadanTitle");
+
+const ramadanDescription =
+    $("ramadanDescription");
+
+const ramadanStatus =
+    $("ramadanStatus");
+
+const arabicGreeting =
+    $("arabicGreeting");
+
+const days =
+    $("days");
+
+const hours =
+    $("hours");
+
+const minutes =
+    $("minutes");
+
+const seconds =
+    $("seconds");
+
+const currentDate =
+    $("currentDate");
+
+const currentTime =
+    $("currentTime");
+
+const currentCity =
+    $("currentCity");
+
+const targetDate =
+    $("targetDate");
+
+const timeMode =
+    $("timeMode");
+
+const prayerDate =
+    $("prayerDate");
+
+const apiStatus =
+    $("apiStatus");
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let ramadanDate = null;
+let hijriToday = null;
+let musicStarted = false;
+let prayerLoadedKey = "";
+let currentMusicSource = "";
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function pad(number) {
+
+    return String(number)
+        .padStart(2,"0");
+}
+
+function formatDate(date) {
+
+    return [
+        pad(date.getDate()),
+        pad(date.getMonth() + 1),
+        date.getFullYear()
+    ].join("-");
+}
+
+function getJakartaDate() {
+
+    const parts =
+        new Intl.DateTimeFormat(
+            "en-US",
+            {
+                timeZone:
+                    "Asia/Jakarta",
+
+                year:
+                    "numeric",
+
+                month:
+                    "numeric",
+
+                day:
+                    "numeric"
+            }
+        ).formatToParts(
+            new Date()
+        );
+
+    let year;
+    let month;
+    let day;
+
+    for (const part of parts) {
+
+        if (part.type === "year") {
+            year =
+                Number(part.value);
+        }
+
+        if (part.type === "month") {
+            month =
+                Number(part.value);
+        }
+
+        if (part.type === "day") {
+            day =
+                Number(part.value);
+        }
+    }
+
+    return new Date(
+        year,
+        month - 1,
+        day
+    );
+}
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock() {
+
+    const now =
+        new Date();
+
+    currentDate.textContent =
+        new Intl.DateTimeFormat(
+            "id-ID",
+            {
+                timeZone:
+                    "Asia/Jakarta",
+
+                weekday:
+                    "long",
+
+                day:
+                    "numeric",
+
+                month:
+                    "long",
+
+                year:
+                    "numeric"
+            }
+        ).format(now);
+
+    currentTime.textContent =
+        new Intl.DateTimeFormat(
+            "id-ID",
+            {
+                timeZone:
+                    "Asia/Jakarta",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit",
+
+                second:
+                    "2-digit",
+
+                hour12:
+                    false
+            }
+        ).format(now);
+
+    updateTheme();
+
+    updatePrayerHighlight();
+}
+
+/* =========================================================
+   THEME
+========================================================= */
+
+function getJakartaHour() {
+
+    const value =
+        new Intl.DateTimeFormat(
+            "en-US",
+            {
+                timeZone:
+                    "Asia/Jakarta",
+
+                hour:
+                    "2-digit",
+
+                hour12:
+                    false
+            }
+        ).format(
+            new Date()
+        );
+
+    return Number(value);
+}
+
+function updateTheme() {
+
+    const hour =
+        getJakartaHour();
+
+    document.body.classList.remove(
+        "day",
+        "sunset",
+        "night"
+    );
+
+    if (
+        hour >= 5 &&
+        hour < 16
+    ) {
+
+        document.body.classList.add(
+            "day"
+        );
+
+        timeMode.textContent =
+            "Siang";
+
+    } else if (
+        hour >= 16 &&
+        hour < 19
+    ) {
+
+        document.body.classList.add(
+            "sunset"
+        );
+
+        timeMode.textContent =
+            "Sore";
+
+    } else {
+
+        document.body.classList.add(
+            "night"
+        );
+
+        timeMode.textContent =
+            "Malam";
+    }
+}
+
+/* =========================================================
+   HIJRI TODAY
+========================================================= */
+
+async function getHijriToday() {
+
+    const date =
+        formatDate(
+            getJakartaDate()
+        );
+
+    const url =
+        `${CONFIG.api}/timingsByCity/${date}` +
+        `?city=Jakarta` +
+        `&country=Indonesia` +
+        `&method=${CONFIG.method}` +
+        `&timezone=Asia%2FJakarta`;
+
+    const response =
+        await fetch(url);
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Gagal mengambil kalender Hijriah."
+        );
+    }
+
+    const json =
+        await response.json();
+
+    return json.data.date.hijri;
+}
+
+/* =========================================================
+   FIND NEXT RAMADAN / LEBARAN
+========================================================= */
+
+async function getNextRamadan() {
+
+    const hijri =
+        await getHijriToday();
+
+    hijriToday =
+        hijri;
+
+    const currentYear =
+        Number(hijri.year);
+
+    const currentMonth =
+        Number(hijri.month.number);
+
+    const currentDay =
+        Number(hijri.day);
+
+    let targetHijriYear =
+        currentYear;
+
+    let targetMonth =
+        9;
+
+    if (
+        currentMonth === 9
+    ) {
+
+        targetMonth =
+            10;
+
+    } else if (
+        currentMonth > 10 ||
+        (
+            currentMonth === 10 &&
+            currentDay > 1
+        )
+    ) {
+
+        targetHijriYear++;
+
+        targetMonth =
+            9;
+
+    } else if (
+        currentMonth === 10 &&
+        currentDay === 1
+    ) {
+
+        targetMonth =
+            10;
+    }
+
+    const url =
+        `${CONFIG.api}/hToG/1-${targetMonth}-${targetHijriYear}`;
+
+    const response =
+        await fetch(url);
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Konversi tanggal target gagal."
+        );
+    }
+
+    const json =
+        await response.json();
+
+    const dateString =
+        json.data.gregorian.date;
+
+    const [
+        day,
+        month,
+        year
+    ] =
+        dateString
+            .split("-")
+            .map(Number);
+
+    return new Date(
+        year,
+        month - 1,
+        day,
+        0,
+        0,
+        0
+    );
+}
+
+/* =========================================================
+   COUNTDOWN
+========================================================= */
+
+function updateCountdown() {
+
+    if (!ramadanDate) {
+        return;
+    }
+
+    const now =
+        new Date();
+
+    const difference =
+        ramadanDate.getTime() -
+        now.getTime();
+
+    if (
+        difference <= 0
+    ) {
+
+        days.textContent =
+            "00";
+
+        hours.textContent =
+            "00";
+
+        minutes.textContent =
+            "00";
+
+        seconds.textContent =
+            "00";
+
+        if (
+            hijriToday &&
+            Number(hijriToday.month.number) === 9
+        ) {
+
+            ramadanTitle.textContent =
+                "Ramadhan Telah Tiba";
+
+            ramadanStatus.textContent =
+                "Ramadhan Mubarak · Lanjut ke Lebaran";
+
+            arabicGreeting.textContent =
+                "رَمَضَان كَرِيم";
+
+            ramadanDescription.textContent =
+                "Selamat datang bulan suci. Hitung mundur Lebaran segera aktif.";
+
+        } else {
+
+            ramadanTitle.textContent =
+                "Lebaran Telah Tiba";
+
+            ramadanStatus.textContent =
+                "Idul Fitri Mubarak";
+
+            arabicGreeting.textContent =
+                "عِيدُ مُبَارَك";
+
+            ramadanDescription.textContent =
+                "Selamat Idul Fitri. Minal aidin wal faizin.";
+        }
+
+        return;
+    }
+
+    const totalSeconds =
+        Math.floor(
+            difference / 1000
+        );
+
+    const d =
+        Math.floor(
+            totalSeconds / 86400
+        );
+
+    const h =
+        Math.floor(
+            (totalSeconds % 86400) /
+            3600
+        );
+
+    const m =
+        Math.floor(
+            (totalSeconds % 3600) /
+            60
+        );
+
+    const s =
+        totalSeconds % 60;
+
+    days.textContent =
+        String(d).padStart(
+            2,
+            "0"
+        );
+
+    hours.textContent =
+        pad(h);
+
+    minutes.textContent =
+        pad(m);
+
+    seconds.textContent =
+        pad(s);
+
+    targetDate.textContent =
+        ramadanDate.toLocaleDateString(
+            "id-ID",
+            {
+                day:
+                    "numeric",
+
+                month:
+                    "short",
+
+                year:
+                    "numeric"
+            }
+        );
+}
+
+/* =========================================================
+   PRAYER API
+========================================================= */
+
+async function loadPrayerTimes() {
+
+    const city =
+        citySelect.value;
+
+    const data =
+        CITIES[city];
+
+    if (!data) {
+        return;
+    }
+
+    currentCity.textContent =
+        city;
+
+    const date =
+        formatDate(
+            getJakartaDate()
+        );
+
+    const cacheKey =
+        `${city}_${date}`;
+
+    if (
+        prayerLoadedKey === cacheKey
+    ) {
+        return;
+    }
+
+    prayerLoadedKey =
+        cacheKey;
+
+    prayerDate.textContent =
+        "Memuat jadwal...";
+
+    apiStatus.textContent =
+        "Mengambil data jadwal salat...";
+
+    const url =
+        `${CONFIG.api}/timingsByCity/${date}` +
+        `?city=${encodeURIComponent(data.city)}` +
+        `&country=${encodeURIComponent(data.country)}` +
+        `&method=${CONFIG.method}` +
+        `&timezone=${encodeURIComponent(data.timezone)}`;
+
+    try {
+
+        const response =
+            await fetch(url);
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+        }
+
+        const json =
+            await response.json();
+
+        const timings =
+            json.data.timings;
+
+        $("imsak").textContent =
+            cleanTime(
+                timings.Imsak
+            );
+
+        $("fajr").textContent =
+            cleanTime(
+                timings.Fajr
+            );
+
+        $("dhuhr").textContent =
+            cleanTime(
+                timings.Dhuhr
+            );
+
+        $("asr").textContent =
+            cleanTime(
+                timings.Asr
+            );
+
+        $("maghrib").textContent =
+            cleanTime(
+                timings.Maghrib
+            );
+
+        $("isha").textContent =
+            cleanTime(
+                timings.Isha
+            );
+
+        $("fastingImsak").textContent =
+            cleanTime(
+                timings.Imsak
+            );
+
+        $("fastingBuka").textContent =
+            cleanTime(
+                timings.Maghrib
+            );
+
+        prayerDate.textContent =
+            json.data.date.readable;
+
+        apiStatus.textContent =
+            `Jadwal ${city} · Metode KEMENAG Indonesia`;
+
+        updatePrayerHighlight();
+
+    } catch (error) {
+
+        console.error(
+            "Prayer API:",
+            error
+        );
+
+        prayerDate.textContent =
+            "Gagal memuat jadwal";
+
+        apiStatus.textContent =
+            "Server jadwal salat tidak dapat diakses.";
+
+        [
+            "imsak",
+            "fajr",
+            "dhuhr",
+            "asr",
+            "maghrib",
+            "isha",
+            "fastingImsak",
+            "fastingBuka"
+        ].forEach(
+            id => {
+
+                $(id).textContent =
+                    "--:--";
+            }
+        );
+    }
+}
+
+function cleanTime(value) {
+
+    if (!value) {
+        return "--:--";
+    }
+
+    return String(value)
+        .replace(
+            /\s*\(.+?\)/g,
+            ""
+        )
+        .trim()
+        .slice(
+            0,
+            5
+        );
+}
+
+/* =========================================================
+   PRAYER HIGHLIGHT
+========================================================= */
+
+function toMinutes(value) {
+
+    if (
+        !value ||
+        !value.includes(":")
+    ) {
+        return null;
+    }
+
+    const [
+        h,
+        m
+    ] =
+        value
+            .split(":")
+            .map(Number);
+
+    return (
+        h * 60 +
+        m
+    );
+}
+
+function getCurrentMinutes() {
+
+    const parts =
+        new Intl.DateTimeFormat(
+            "en-US",
+            {
+                timeZone:
+                    "Asia/Jakarta",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit",
+
+                hour12:
+                    false
+            }
+        ).formatToParts(
+            new Date()
+        );
+
+    let h = 0;
+    let m = 0;
+
+    for (const part of parts) {
+
+        if (
+            part.type === "hour"
+        ) {
+
+            h =
+                Number(
+                    part.value
+                );
+        }
+
+        if (
+            part.type === "minute"
+        ) {
+
+            m =
+                Number(
+                    part.value
+                );
+        }
+    }
+
+    return (
+        h * 60 +
+        m
+    );
+}
+
+function updatePrayerHighlight() {
+
+    const current =
+        getCurrentMinutes();
+
+    document
+        .querySelectorAll(".prayer")
+        .forEach(
+            element => {
+
+                element.classList.remove(
+                    "active"
+                );
+            }
+        );
+
+    const order = [
+        "Imsak",
+        "Fajr",
+        "Dhuhr",
+        "Asr",
+        "Maghrib",
+        "Isha"
+    ];
+
+    let active =
+        null;
+
+    for (
+        const name of order
+    ) {
+
+        const element =
+            document.querySelector(
+                `[data-prayer="${name}"]`
+            );
+
+        if (!element) {
+            continue;
+        }
+
+        const time =
+            element.querySelector(
+                ".prayer-time"
+            );
+
+        const minutes =
+            toMinutes(
+                time.textContent
+            );
+
+        if (
+            minutes !== null &&
+            current >= minutes
+        ) {
+
+            active =
+                element;
+        }
+    }
+
+    if (active) {
+
+        active.classList.add(
+            "active"
+        );
+    }
+}
+
+/* =========================================================
+   ISLAMIC PERIOD
+========================================================= */
+
+async function getIslamicPeriod() {
+
+    try {
+
+        const hijri =
+            hijriToday ||
+            await getHijriToday();
+
+        const month =
+            Number(
+                hijri.month.number
+            );
+
+        const day =
+            Number(
+                hijri.day
+            );
+
+        if (
+            month === 10 &&
+            day === 1
+        ) {
+
+            return "eid";
+        }
+
+        if (
+            month === 9
+        ) {
+
+            return "ramadan";
+        }
+
+        return "normal";
+
+    } catch {
+
+        return "normal";
+    }
+}
+
+/* =========================================================
+   PERIOD UI
+========================================================= */
+
+async function applyPeriodUI() {
+
+    const period =
+        await getIslamicPeriod();
+
+    document.body.classList.remove(
+        "ketupat",
+        "eid"
+    );
+
+    const labelEl =
+        document.querySelector(
+            ".label"
+        );
+
+    try {
+
+        const nextTarget =
+            await getNextRamadan();
+
+        ramadanDate =
+            nextTarget;
+
+        updateCountdown();
+
+    } catch (e) {
+
+        console.warn(
+            "Refresh target:",
+            e
+        );
+    }
+
+    const prayerTitle =
+        document.querySelector(
+            ".card-title h3"
+        );
+
+    if (
+        period === "ramadan"
+    ) {
+
+        document.body.classList.add(
+            "ketupat"
+        );
+
+        if (labelEl) {
+            labelEl.textContent =
+                "SEDANG RAMADHAN · MENUJU LEBARAN";
+        }
+
+        ramadanTitle.textContent =
+            "Menuju Lebaran";
+
+        if (prayerTitle) {
+            prayerTitle.textContent =
+                "Jadwal Imsak & Salat";
+        }
+
+        arabicGreeting.textContent =
+            "إِلَى عِيدِ الْفِطْرِ";
+
+        ramadanStatus.textContent =
+            "Sedang berpuasa · Menuju Idul Fitri";
+
+        if (ramadanDate) {
+
+            ramadanDescription.textContent =
+                `Sedang Ramadhan. Lebaran diperkirakan ${ramadanDate.toLocaleDateString(
+                    "id-ID",
+                    {
+                        weekday:
+                            "long",
+
+                        day:
+                            "numeric",
+
+                        month:
+                            "long",
+
+                        year:
+                            "numeric"
+                    }
+                )}`;
+        }
+
+    } else if (
+        period === "eid"
+    ) {
+
+        /*
+         * Lebaran sekarang juga memakai
+         * class ketupat supaya ketupat tetap muncul.
+         */
+
+        document.body.classList.add(
+            "ketupat",
+            "eid"
+        );
+
+        if (labelEl) {
+            labelEl.textContent =
+                "SELAMAT IDUL FITRI";
+        }
+
+        ramadanTitle.textContent =
+            "Lebaran Telah Tiba";
+
+        arabicGreeting.textContent =
+            "عِيدُ مُبَارَك";
+
+        ramadanStatus.textContent =
+            "Idul Fitri Mubarak";
+
+        ramadanDescription.textContent =
+            "Selamat Idul Fitri. Minal aidin wal faizin.";
+
+        if (prayerTitle) {
+            prayerTitle.textContent =
+                "Jadwal Salat Hari Ini";
+        }
+
+    } else {
+
+        if (labelEl) {
+            labelEl.textContent =
+                "SUASANA MENANTI RAMADHAN";
+        }
+
+        ramadanTitle.textContent =
+            "Menuju Ramadhan";
+
+        if (prayerTitle) {
+            prayerTitle.textContent =
+                "Jadwal Salat Hari Ini";
+        }
+
+        arabicGreeting.textContent =
+            "أَهْلًا وَسَهْلًا يَا رَمَضَان";
+
+        ramadanStatus.textContent =
+            "Menunggu datangnya bulan suci";
+
+        if (ramadanDate) {
+
+            ramadanDescription.textContent =
+                `1 Ramadhan diperkirakan pada ${ramadanDate.toLocaleDateString(
+                    "id-ID",
+                    {
+                        weekday:
+                            "long",
+
+                        day:
+                            "numeric",
+
+                        month:
+                            "long",
+
+                        year:
+                            "numeric"
+                    }
+                )}`;
+        }
+    }
+}
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+async function setMusicSource(
+    source
+) {
+
+    if (
+        !source ||
+        currentMusicSource === source
+    ) {
+        return;
+    }
+
+    currentMusicSource =
+        source;
+
+    backgroundMusic.pause();
+
+    backgroundMusic.src =
+        source;
+
+    backgroundMusic.load();
+
+    try {
+
+        await backgroundMusic.play();
+
+    } catch (error) {
+
+        console.warn(
+            "Audio:",
+            error
+        );
+    }
+}
+
+async function selectMusic() {
+
+    if (!musicStarted) {
+        return;
+    }
+
+    const period =
+        await getIslamicPeriod();
+
+    let source =
+        CONFIG.normalMusic;
+
+    if (
+        period === "ramadan"
+    ) {
+
+        source =
+            CONFIG.ramadanMusic;
+    }
+
+    if (
+        period === "eid"
+    ) {
+
+        source =
+            CONFIG.eidMusic;
+    }
+
+    await setMusicSource(
+        source
+    );
+}
+
+/* =========================================================
+   SPLASH
+========================================================= */
+
+openButton.addEventListener(
+    "click",
+    async () => {
+
+        if (musicStarted) {
+            return;
+        }
+
+        musicStarted =
+            true;
+
+        openButton.disabled =
+            true;
+
+        openButton.textContent =
+            "Membuka...";
+
+        const period =
+            await getIslamicPeriod();
+
+        let source =
+            CONFIG.normalMusic;
+
+        if (
+            period === "ramadan"
+        ) {
+
+            source =
+                CONFIG.ramadanMusic;
+
+        } else if (
+            period === "eid"
+        ) {
+
+            source =
+                CONFIG.eidMusic;
+        }
+
+        currentMusicSource =
+            source;
+
+        backgroundMusic.src =
+            source;
+
+        backgroundMusic.load();
+
+        try {
+
+            await backgroundMusic.play();
+
+        } catch (error) {
+
+            console.warn(
+                "Browser menolak audio:",
+                error
+            );
+        }
+
+        splash.classList.add(
+            "hidden"
+        );
+
+        systemStatus.textContent =
+            "Sistem aktif";
+
+        setTimeout(
+            () => {
+
+                splash.style.display =
+                    "none";
+
+            },
+            950
+        );
+    }
+);
+
+/* =========================================================
+   CITY CHANGE
+========================================================= */
+
+citySelect.addEventListener(
+    "change",
+    () => {
+
+        prayerLoadedKey =
+            "";
+
+        loadPrayerTimes();
+    }
+);
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+async function initialize() {
+
+    updateClock();
+
+    setInterval(
+        updateClock,
+        1000
+    );
+
+    setInterval(
+        updateCountdown,
+        1000
+    );
+
+    try {
+
+        systemStatus.textContent =
+            "Sinkronisasi...";
+
+        ramadanDate =
+            await getNextRamadan();
+
+        ramadanTitle.textContent =
+            "Memuat...";
+
+        ramadanDescription.textContent =
+            "Menghitung tanggal target...";
+
+        ramadanStatus.textContent =
+            "Memuat...";
+
+        arabicGreeting.textContent =
+            "أَهْلًا وَسَهْلًا يَا رَمَضَان";
+
+        updateCountdown();
+
+        await applyPeriodUI();
+
+        systemStatus.textContent =
+            "Tersinkronisasi";
+
+    } catch (error) {
+
+        console.error(
+            "Ramadan:",
+            error
+        );
+
+        systemStatus.textContent =
+            "Mode fallback";
+
+        const fallbackYear =
+            new Date()
+                .getFullYear() + 1;
+
+        ramadanDate =
+            new Date(
+                fallbackYear,
+                1,
+                8,
+                0,
+                0,
+                0
+            );
+
+        ramadanDescription.textContent =
+            "API kalender Hijriah sedang tidak tersedia.";
+
+        updateCountdown();
+    }
+
+    await loadPrayerTimes();
+
+    setInterval(
+        () => {
+
+            prayerLoadedKey =
+                "";
+
+            loadPrayerTimes();
+
+        },
+        60 * 60 * 1000
+    );
+
+    setInterval(
+        selectMusic,
+        30 * 60 * 1000
+    );
+
+    setInterval(
+        applyPeriodUI,
+        60 * 1000
+    );
+
+    setInterval(
+        async () => {
+
+            if (!musicStarted) {
+                return;
+            }
+
+            await selectMusic();
+
+        },
+        60 * 1000
+    );
+}
+
+/* =========================================================
+   START
+========================================================= */
+
+initialize();
+
+</script>
+
+</body>
+</html>
